@@ -19,8 +19,7 @@ const CATEGORY_MAPPING = [
     { hf: 'Sports_and_Outdoors', local: 'sports' },
     { hf: 'Toys_and_Games', local: 'toys' },
     { hf: 'Pet_Supplies', local: 'pets' },
-    { h
-        f: 'Automotive', local: 'automotive' }
+    { hf: 'Automotive', local: 'automotive' }
 ];
 
 const importReviews = async () => {
