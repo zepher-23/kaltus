@@ -29,11 +29,6 @@ export default defineConfig(({ mode }) => {
       }
     },
 
-    // Define environment variables
-    define: {
-      'import.meta.env.VITE_API_URL': JSON.stringify(env.VITE_API_URL)
-    },
-
     // Server config for development
     server: {
       port: 5173,
