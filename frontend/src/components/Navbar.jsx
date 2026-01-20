@@ -5,6 +5,7 @@ import AuthContext from '../context/AuthContext';
 import CartContext from '../context/CartContext';
 import { CATEGORIES } from '../data/mockData';
 import WishlistContext from '../context/WishlistContext';
+import API from '../config/api';
 
 const Navbar = () => {
     const { user, logout } = useContext(AuthContext);
@@ -35,7 +36,7 @@ const Navbar = () => {
         const fetchSuggestions = async () => {
             if (searchTerm.trim().length > 1) {
                 try {
-                    let url = `http://localhost:5000/api/products/suggestions?keyword=${encodeURIComponent(searchTerm)}`;
+                    let url = `${API.SUGGESTIONS}?keyword=${encodeURIComponent(searchTerm)}`;
                     if (searchCategory !== 'All') {
                         url += `&category=${encodeURIComponent(searchCategory)}`;
                     }
@@ -371,8 +372,8 @@ const Navbar = () => {
                                     key={cat.id}
                                     to={cat.link}
                                     className={`flex-shrink-0 px-4 py-2 rounded-lg text-sm font-medium transition-all ${isActive
-                                            ? 'bg-white text-slate-900'
-                                            : 'text-white/80 hover:text-white hover:bg-white/10'
+                                        ? 'bg-white text-slate-900'
+                                        : 'text-white/80 hover:text-white hover:bg-white/10'
                                         }`}
                                 >
                                     {cat.title}

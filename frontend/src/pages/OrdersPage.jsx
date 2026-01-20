@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import { Package, Clock, CheckCircle } from 'lucide-react';
+import API from '../config/api';
 
 const OrdersPage = () => {
     const { user, loading: authLoading } = useContext(AuthContext);
@@ -15,7 +16,7 @@ const OrdersPage = () => {
         } else if (user) {
             const fetchOrders = async () => {
                 try {
-                    const response = await fetch('http://localhost:5000/api/orders/myorders', {
+                    const response = await fetch(API.MY_ORDERS, {
                         headers: {
                             Authorization: `Bearer ${user.token}`,
                         },

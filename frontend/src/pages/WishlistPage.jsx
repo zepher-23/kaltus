@@ -4,6 +4,7 @@ import { Heart, Trash2, ShoppingCart, ArrowRight } from 'lucide-react';
 import WishlistContext from '../context/WishlistContext';
 import CartContext from '../context/CartContext';
 import AuthContext from '../context/AuthContext';
+import API from '../config/api';
 
 const WishlistPage = () => {
     const { wishlist, removeFromWishlist } = useContext(WishlistContext);
@@ -32,7 +33,7 @@ const WishlistPage = () => {
                 const validProducts = [];
                 await Promise.all(wishlist.map(async (id) => {
                     try {
-                        const res = await fetch(`http://localhost:5000/api/products/${id}`);
+                        const res = await fetch(API.PRODUCT(id));
                         if (res.ok) {
                             const data = await res.json();
                             validProducts.push(data);

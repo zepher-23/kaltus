@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import { User, Package, RefreshCw, Lock, Mail, Save, MapPin, Plus, Trash2, Edit2 } from 'lucide-react';
+import API from '../config/api';
 
 const ProfilePage = () => {
     const { user, updateProfile, addAddress, deleteAddress, updateAddress, setDefaultAddress, loading: authLoading } = useContext(AuthContext);
@@ -42,7 +43,7 @@ const ProfilePage = () => {
     const fetchOrders = async () => {
         setLoadingOrders(true);
         try {
-            const response = await fetch('http://localhost:5000/api/orders/myorders', {
+            const response = await fetch(API.MY_ORDERS, {
                 headers: {
                     Authorization: `Bearer ${user.token}`,
                 },

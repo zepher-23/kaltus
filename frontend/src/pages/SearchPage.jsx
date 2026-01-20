@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import { ArrowLeft, Filter, Search } from 'lucide-react';
+import API from '../config/api';
 
 const SearchPage = () => {
     const { keyword } = useParams();
@@ -14,7 +15,7 @@ const SearchPage = () => {
         const fetchProducts = async () => {
             setLoading(true);
             try {
-                let url = `http://localhost:5000/api/products?keyword=${keyword}`;
+                let url = `${API.PRODUCTS}?keyword=${keyword}`;
                 if (categoryFilter && categoryFilter !== 'All') {
                     url += `&category=${encodeURIComponent(categoryFilter)}`;
                 }

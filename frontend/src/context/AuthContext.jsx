@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
+import API from '../config/api';
 
 const AuthContext = createContext();
 
@@ -15,7 +16,7 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = async (email, password) => {
-        const response = await fetch('http://localhost:5000/api/users/login', {
+        const response = await fetch(API.LOGIN, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -35,7 +36,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const register = async (name, email, password) => {
-        const response = await fetch('http://localhost:5000/api/users', {
+        const response = await fetch(API.USERS, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -60,7 +61,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const updateProfile = async (userProfile) => {
-        const response = await fetch('http://localhost:5000/api/users/profile', {
+        const response = await fetch(API.PROFILE, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -81,7 +82,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const addAddress = async (address) => {
-        const response = await fetch('http://localhost:5000/api/users/profile/addresses', {
+        const response = await fetch(`${API.PROFILE}/addresses`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -109,7 +110,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const deleteAddress = async (addressId) => {
-        const response = await fetch(`http://localhost:5000/api/users/profile/addresses/${addressId}`, {
+        const response = await fetch(`${API.PROFILE}/addresses/${addressId}`, {
             method: 'DELETE',
             headers: {
                 Authorization: `Bearer ${user.token}`,
@@ -130,7 +131,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const updateAddress = async (addressId, address) => {
-        const response = await fetch(`http://localhost:5000/api/users/profile/addresses/${addressId}`, {
+        const response = await fetch(`${API.PROFILE}/addresses/${addressId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

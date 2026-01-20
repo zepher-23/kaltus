@@ -3,6 +3,7 @@ import ProductCard from '../components/ProductCard';
 import { Link } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import { ArrowRight, Sparkles, TrendingUp, ChevronRight, Star, Truck, Shield, Gift } from 'lucide-react';
+import API from '../config/api';
 
 const Home = () => {
     const { user } = useContext(AuthContext);
@@ -16,7 +17,7 @@ const Home = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const res = await fetch('http://localhost:5000/api/products');
+                const res = await fetch(API.PRODUCTS);
                 const data = await res.json();
                 setProducts(data);
                 setLoading(false);

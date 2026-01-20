@@ -4,6 +4,7 @@ import { useParams, Link, useLocation } from 'react-router-dom';
 import { CATEGORIES, DEPARTMENTS } from '../data/mockData';
 import ProductCard from '../components/ProductCard';
 import { ArrowLeft, Filter, ChevronRight, SlidersHorizontal } from 'lucide-react';
+import API from '../config/api';
 
 const CategoryPage = () => {
     const { categoryName } = useParams();
@@ -30,8 +31,8 @@ const CategoryPage = () => {
             try {
                 // Fetch all products if "all" or specific category filter
                 const url = categoryName === 'all'
-                    ? 'http://localhost:5000/api/products'
-                    : `http://localhost:5000/api/products?category=${categoryName}`;
+                    ? API.PRODUCTS
+                    : `${API.PRODUCTS}?category=${categoryName}`;
 
                 const res = await fetch(url);
                 const data = await res.json();

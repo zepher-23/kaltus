@@ -25,9 +25,9 @@ export const API = {
     MY_ORDERS: `${API_BASE_URL}/api/orders/myorders`,
 
     // Payment
-    PAYMENT_CREATE: `${API_BASE_URL}/api/payment/create-order`,
-    PAYMENT_VERIFY: `${API_BASE_URL}/api/payment/verify`,
-    RAZORPAY_KEY: `${API_BASE_URL}/api/payment/key`,
+    PAYMENT_CHECKOUT: `${API_BASE_URL}/api/payment/checkout`,
+    PAYMENT_VERIFY: `${API_BASE_URL}/api/payment/paymentverification`,
+    PAYMENT_GETKEY: `${API_BASE_URL}/api/payment/getkey`,
 
     // Reviews
     REVIEWS: `${API_BASE_URL}/api/reviews`,

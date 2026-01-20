@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { MapPin, Plus, CheckCircle, CreditCard, ShoppingBag, Truck } from 'lucide-react';
 import CartContext from '../context/CartContext';
 import AuthContext from '../context/AuthContext';
+import API from '../config/api';
 
 const CheckoutPage = () => {
     const { cartItems, cartTotal, clearCart } = useContext(CartContext);
@@ -61,14 +62,14 @@ const CheckoutPage = () => {
         setLoadingPay(true);
 
         try {
-            const keyRes = await fetch('http://localhost:5000/api/payment/getkey', {
+            const keyRes = await fetch(API.PAYMENT_GETKEY, {
                 headers: { Authorization: `Bearer ${user.token}` }
             });
             const { key } = await keyRes.json();
 
             if (!key) throw new Error("Could not retrieve Razorpay Key");
 
-            const orderRes = await fetch('http://localhost:5000/api/payment/checkout', {
+            const orderRes = await fetch(API.PAYMENT_CHECKOUT, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -87,7 +88,7 @@ const CheckoutPage = () => {
                 image: "https://avatars.githubusercontent.com/u/12345678?v=4",
                 order_id: order.id,
                 handler: async function (response) {
-                    const verifyRes = await fetch('http://localhost:5000/api/payment/paymentverification', {
+                    const verifyRes = await fetch(API.PAYMENT_VERIFY, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -153,7 +154,7 @@ const CheckoutPage = () => {
                 }
             };
 
-            const res = await fetch('http://localhost:5000/api/orders', {
+            const res = await fetch(API.ORDERS, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

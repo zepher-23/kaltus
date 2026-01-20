@@ -4,6 +4,7 @@ import { Star, ShoppingCart, Truck, ShieldCheck, ArrowLeft, Check, Heart, Share2
 import AuthContext from '../context/AuthContext';
 import CartContext from '../context/CartContext';
 import WishlistContext from '../context/WishlistContext';
+import API from '../config/api';
 
 const ProductPage = () => {
     const { id } = useParams();
@@ -37,14 +38,14 @@ const ProductPage = () => {
         const fetchProduct = async () => {
             try {
                 setLoading(true);
-                const res = await fetch(`http://localhost:5000/api/products/${id}`);
+                const res = await fetch(API.PRODUCT(id));
                 if (!res.ok) throw new Error('Product not found');
                 const data = await res.json();
                 setProduct(data);
                 setMainImage(data.image);
 
                 // Fetch reviews
-                const reviewRes = await fetch(`http://localhost:5000/api/reviews/${id}`);
+                const reviewRes = await fetch(API.PRODUCT_REVIEWS(id));
                 if (reviewRes.ok) {
                     const reviewData = await reviewRes.json();
                     setReviews(reviewData);
