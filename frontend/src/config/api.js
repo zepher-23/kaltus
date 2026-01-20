@@ -1,7 +1,7 @@
 // API Configuration for Production/Development
 // Uses environment variable in production, localhost in development
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://kaltus-production.up.railway.app';
 
 export const API = {
     BASE_URL: API_BASE_URL,
