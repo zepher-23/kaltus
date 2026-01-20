@@ -1,13 +1,39 @@
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
 
-const instance = new Razorpay({
-    key_id: process.env.RZR_PAY_TEST_KEY,
-    key_secret: process.env.RZR_PAY_TEST_SECRET,
-});
+// Lazy initialization of Razorpay instance
+let razorpayInstance = null;
+
+const getRazorpayInstance = () => {
+    if (!razorpayInstance) {
+        const key_id = process.env.RZR_PAY_TEST_KEY;
+        const key_secret = process.env.RZR_PAY_TEST_SECRET;
+
+        if (!key_id || !key_secret) {
+            console.error('Razorpay credentials not found in environment variables');
+            console.error('Required: RZR_PAY_TEST_KEY and RZR_PAY_TEST_SECRET');
+            return null;
+        }
+
+        razorpayInstance = new Razorpay({
+            key_id: key_id,
+            key_secret: key_secret,
+        });
+    }
+    return razorpayInstance;
+};
 
 const checkout = async (req, res) => {
     try {
+        const instance = getRazorpayInstance();
+
+        if (!instance) {
+            return res.status(500).json({
+                success: false,
+                message: "Payment service not configured. Please contact support."
+            });
+        }
+
         // Currency Conversion: USD to INR (Approx 1 USD = 86 INR)
         const EXCHANGE_RATE = 86;
         const amountInINR = Math.ceil(Number(req.body.amount) * EXCHANGE_RATE);
@@ -25,7 +51,7 @@ const checkout = async (req, res) => {
             order,
         });
     } catch (error) {
-        console.error(error);
+        console.error('Checkout error:', error);
         res.status(500).json({
             success: false,
             message: "Payment Order Creation Failed"
@@ -37,18 +63,25 @@ const paymentVerification = async (req, res) => {
     try {
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
 
+        const key_secret = process.env.RZR_PAY_TEST_SECRET;
+
+        if (!key_secret) {
+            return res.status(500).json({
+                success: false,
+                message: "Payment verification service not configured"
+            });
+        }
+
         const body = razorpay_order_id + "|" + razorpay_payment_id;
 
         const expectedSignature = crypto
-            .createHmac("sha256", process.env.RZR_PAY_TEST_SECRET)
+            .createHmac("sha256", key_secret)
             .update(body.toString())
             .digest("hex");
 
         const isAuthentic = expectedSignature === razorpay_signature;
 
         if (isAuthentic) {
-            // Database operations here (e.g. mark order as paid) happens in order creation usually
-            // but we can return success here for frontend to proceed
             res.status(200).json({
                 success: true,
                 razorpay_payment_id,
@@ -62,7 +95,7 @@ const paymentVerification = async (req, res) => {
             });
         }
     } catch (error) {
-        console.error(error);
+        console.error('Payment verification error:', error);
         res.status(500).json({
             success: false,
             message: "Verify Failed"
@@ -71,7 +104,14 @@ const paymentVerification = async (req, res) => {
 };
 
 const getKey = (req, res) => {
-    res.status(200).json({ key: process.env.RZR_PAY_TEST_KEY });
+    const key = process.env.RZR_PAY_TEST_KEY;
+    if (!key) {
+        return res.status(500).json({
+            success: false,
+            message: "Payment key not configured"
+        });
+    }
+    res.status(200).json({ key });
 };
 
 module.exports = {
